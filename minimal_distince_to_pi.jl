@@ -20,8 +20,8 @@ function minimalDistanceToPi(min::Int64, max::Int64)
     # println("distance={$distance}, result=$result")
     # println(result)
     # println(abs(result-pi)) 
-    println("result=$result")
-    println(abs(3126535/995207-pi))
+    #println("result=$result")
+    #println(abs(3126535/995207-pi))
     result
 end
 
@@ -43,11 +43,11 @@ function __init__()
     s = readline()
     #println("index = ", indexof("hello world", ' '))
     index = indexof(s, ' ')
-    println("index=$index")
+    #println("index=$index")
     #println(s[1:5])
-    println("1=", s[1:(index-1)], "2=", s[(index+1):end])
+    #println("1=", s[1:(index-1)], "2=", s[(index+1):end])
     result = minimalDistanceToPi(Parsers.parse(Int64,s[1:(index-1)]),Parsers.parse(Int64,  s[(index+1):end]))
-    println("result=$result")
+    println("$result")
 end
 
 __init__()
