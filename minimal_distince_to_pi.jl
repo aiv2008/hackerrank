@@ -1,11 +1,39 @@
+interval = [	3, 7, 15, 1, 292, 1, 1, 1, 2, 1, 3, 1, 14, 2, 1, 1, 2, 2, 2, 2, 1, 84, 2, 1, 1, 15, 3, 13, 1, 4, 2, 6, 6, 99, 1, 2, 2, 6, 3, 5, 1, 1, 6, 8, 1, 7, 1, 2, 3, 7, 1, 2, 1, 1, 12, 1, 1, 1, 3, 1, 1, 8, 1, 1, 2, 1, 6, 1, 1, 5, 2, 2, 3, 1, 2, 4, 4, 16, 1, 161, 45, 1, 22, 1, 2, 2, 1, 4, 1, 2, 24, 1, 2, 1, 3, 1, 2, 1]
+
+function getSize()
+    length(interval)
+end
+
 function decursion(size::Int64)
-    interval = [	3, 7, 15, 1, 292, 1, 1, 1, 2, 1, 3, 1, 14, 2, 1, 1, 2, 2, 2, 2, 1, 84, 2, 1, 1, 15, 3, 13, 1, 4, 2, 6, 6, 99, 1, 2, 2, 6, 3, 5, 1, 1, 6, 8, 1, 7, 1, 2, 3, 7, 1, 2, 1, 1, 12, 1, 1, 1, 3, 1, 1, 8, 1, 1, 2, 1, 6, 1, 1, 5, 2, 2, 3, 1, 2, 4, 4, 16, 1, 161, 45, 1, 22, 1, 2, 2, 1, 4, 1, 2, 24, 1, 2, 1, 3, 1, 2, 1]
-    if size > length(interval) throw(Exception("size overflow"))
+    # interval = [	3, 7, 15, 1, 292, 1, 1, 1, 2, 1, 3, 1, 14, 2, 1, 1, 2, 2, 2, 2, 1, 84, 2, 1, 1, 15, 3, 13, 1, 4, 2, 6, 6, 99, 1, 2, 2, 6, 3, 5, 1, 1, 6, 8, 1, 7, 1, 2, 3, 7, 1, 2, 1, 1, 12, 1, 1, 1, 3, 1, 1, 8, 1, 1, 2, 1, 6, 1, 1, 5, 2, 2, 3, 1, 2, 4, 4, 16, 1, 161, 45, 1, 22, 1, 2, 2, 1, 4, 1, 2, 24, 1, 2, 1, 3, 1, 2, 1]
+    # if size > length(interval) throw(BoundsError("size overflow")) end
+    # if size < 0 size = length(interval) end
+    # # sum = last(interval)
+    # sum = last(interval[size])
+    # for i =  1 : size-1
+    #     sum = 1 / sum + interval[size-i]
+    #     println("sum=$sum")
+    # end
+    # sum
+    decursion(1, size)
+end
+
+function decursion(fromIndex::Int64,size::Int64)
+    # interval = [	3, 7, 15, 1, 292, 1, 1, 1, 2, 1, 3, 1, 14, 2, 1, 1, 2, 2, 2, 2, 1, 84, 2, 1, 1, 15, 3, 13, 1, 4, 2, 6, 6, 99, 1, 2, 2, 6, 3, 5, 1, 1, 6, 8, 1, 7, 1, 2, 3, 7, 1, 2, 1, 1, 12, 1, 1, 1, 3, 1, 1, 8, 1, 1, 2, 1, 6, 1, 1, 5, 2, 2, 3, 1, 2, 4, 4, 16, 1, 161, 45, 1, 22, 1, 2, 2, 1, 4, 1, 2, 24, 1, 2, 1, 3, 1, 2, 1]
+    # println("size of interval is :", length(interval))
+    if size > length(interval) throw(BoundsError("size overflow")) end
+    if size < 0 size = length(interval) end
     # sum = last(interval)
-    sum = last(interval[size])
-    for i =  1 : size-1
-        sum = 1 / sum + interval[size-i]
-        println("sum=$sum")
+    sum = 0.0
+    i = size
+    # sum = last(interval[size])
+    # println("fromindex=$fromIndex")
+    while i >= fromIndex
+    # for i =  fromIndex : size
+        # sum = 1 / sum + interval[size-i]
+        sum = isequal(sum, 0) ? interval[i] :  (1 / sum + interval[i])
+        # println("i=$i,sum=$sum")
+        i = i - 1
     end
     sum
 end
@@ -58,11 +86,25 @@ function getFromNum(min::Int64, max::Int64)
 end
 
 function minimalDistanceToPi(min::Int64, max::Int64)
-    result = getFromDen(min, max)
-    if isequal("", result)
-        result = getFromNum(Int(round(min*pi)),Int(round(max*pi)))
+    # result = getFromDen(min, max)
+    # if isequal("", result)
+    #     result = getFromNum(Int(round(min*pi)),Int(round(max*pi)))
+    # end
+    # result
+    i = 2
+    result = decursion(2, i)  
+    size = getSize()
+    println("size=$size, result=$result")
+    while result <= max && i <= size
+        i = i + 1
+        println("result=$result")
+        # println("i=$i")
+        result = decursion(2, i)
+        if result < min continue end
     end
-    result
+    # result = interval[1] + 1/result
+    numer = interval[1]*result+1
+    "$numer/$result"
 end
 
 function indexof(s::AbstractString, inst::AbstractChar)
@@ -80,9 +122,8 @@ function __init__()
     s = readline()
     index = indexof(s, ' ')
     result = minimalDistanceToPi(parse(Int64,s[1:(index-1)]),parse(Int64,  s[(index+1):end]))
-    # result = getFromNum(parse(Int64,s[1:(index-1)]),parse(Int64,  s[(index+1):end]))
     println("$result")
 end
 
-# __init__()
+__init__()
 
