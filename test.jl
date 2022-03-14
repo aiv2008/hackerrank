@@ -19,17 +19,18 @@ end
 
 function __init__()
     s = readline()
-    # for i in 1 : parse(Int64, s)
-    #     # result = test_minimal_distince_to_pi(i)
-    #     result = test_2(i)
-    #     println("i=$i, result=$result")
-    # end
-    test_2(parse(Int64, s))
+    for i in 1 : parse(Int64, s)
+        result = test_minimal_distince_to_pi(i)
+        # result = test_2(i)
+        println("i=$i, result=$result")
+        # println("i=$i")
+    end
+    # test_2(parse(Int64, s))
 end
 
 
 function test_2(len::Int64)
-    println("len=$len")
+    # println("len=$len")
     p_0, p_1, q_0, q_1 = 1,interval[1], 0 , 1
     p, q = 0, 0
     for i = 1 : len
@@ -37,7 +38,7 @@ function test_2(len::Int64)
         if i == 1
             p, q = p_1 , q_1
         else
-            println("p_0=$p_0, p_1=$p_1, q_0=$q_0, q_1=$q_1")
+            # println("p_0=$p_0, p_1=$p_1, q_0=$q_0, q_1=$q_1")
             p, q = interval[i]*p_1 + p_0,  interval[i]*q_1 + q_0
             # println("p=$p, q=$q")
             p_0 = p_1
@@ -45,8 +46,8 @@ function test_2(len::Int64)
             q_0 = q_1
             q_1 = q
         end
-        println("p=$p, q=$q")
     end
+    println("p=$p, q=$q")
     p/q
 end
 

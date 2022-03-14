@@ -49,15 +49,54 @@ function cal(size::Int64)
     numerator,denominator
 end
 
+function cal_2(len::Int64)
+    # println("len=$len")
+    p_0, p_1, q_0, q_1 = 1,interval[1], 0 , 1
+    p, q = 0, 0
+    for i = 1 : len
+        # println("interval_$i=", interval[i])
+        if i == 1
+            p, q = p_1 , q_1
+        else
+            # println("p_0=$p_0, p_1=$p_1, q_0=$q_0, q_1=$q_1")
+            p, q = interval[i]*p_1 + p_0,  interval[i]*q_1 + q_0
+            # println("p=$p, q=$q")
+            p_0 = p_1
+            p_1 = p
+            q_0 = q_1
+            q_1 = q
+        end
+    end
+    println("p=$p, q=$q")
+    # p/q
+    p, q
+end
+
 function minimalDistanceToPi(min::Int64, max::Int64)
     i = getSize()
     numerator,denominator= 0,0
-    while (denominator < min || denominator > max) && i >= 1
-        numerator,denominator = cal(i)
-        i = i - 1
-        # println("denominator=$denominator")
+    # while (denominator < min || denominator > max) && i >= 1
+    #     numerator,denominator = cal_2(i)
+    #     i = i - 1
+    # end
+    strResult = ""
+    result = 1.0
+    for i = 1 : getSize()
+        numerator,denominator = cal_2(i)
+        if denominator > min
+            continue
+        elseif denominator <= max
+            # strResult = "$numerator/$denominator"
+            if abs(numerator/denominator - pi) <  result
+                result = numerator/denominator
+                strResult = "$numerator/$denominator"
+            end
+        else
+            break
+        end
     end
-    "$numerator/$denominator"
+    # "$numerator/$denominator"
+    strResult
 end
 
 function indexof(s::AbstractString, inst::AbstractChar)
