@@ -20,10 +20,10 @@ end
 function __init__()
     s = readline()
     for i in 1 : parse(Int64, s)
-        result = cal_3(i)
-        # result = test_2(i)
+        # p, q = cal_3(i)
+        result = test_minimal_distince_to_pi(i)
+        # println("i=$i, result=($p, $q), p/q = ", p/q)
         println("i=$i, result=$result")
-        # println("i=$i")
     end
     # test_2(parse(Int64, s))
 end
@@ -52,24 +52,17 @@ function test_2(len::Int64)
 end
 
 function cal_3(len::Int64)
-    p, q, a = 0, 0, 2
-    p_0, p_1, q_0, q_1 = 0, 4, 1, 1
-    for i = 1 : len
-        if i == 1
-            p, q = p_1 , q_1
-        else
-            if i == 2
-                p, q = a*p_1 + (1*(i-1)-1)^2,  a*q_1 + (a*(i-1)-1)^2
-            else
-                p, q = a*p_1 + (a*(i-1)-1)^2,  a*q_1 + (a*(i-1)-1)^2
-            end
-            # println("p=$p, q=$q")
-            p_0 = p_1
-            p_1 = p
-            q_0 = q_1
-            q_1 = q
-        end
+    if len == 1 return 8, 3 end
+    p, q = (2len-1)^2, 2
+    # p_1, q_1 = 0, 0
+    i = len - 1
+    # println("p1=$p, q1=$q")
+    while i >= 1
+        # p_1, q_1 = p, q        
+        p, q = (2i-1)^2*q, 2q+p
+        i = i - 1
     end
+    p, q = 4q, p+q
     println("p=$p, q=$q")
     p, q
 end
