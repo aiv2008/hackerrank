@@ -51,8 +51,8 @@ end
 
 function cal_2(len::Int64)
     # println("len=$len")
-    p_0, p_1, q_0, q_1 = 1,interval[1], 0 , 1
-    p, q = 0, 0
+    p_0::UInt64, p_1::UInt64, q_0::UInt64, q_1::UInt64 = 1,interval[1], 0 , 1
+    p::UInt64, q::UInt64 = 0, 0
     for i = 1 : len
         # println("interval_$i=", interval[i])
         if i == 1
@@ -67,8 +67,22 @@ function cal_2(len::Int64)
             q_1 = q
         end
     end
-    println("p=$p, q=$q")
+    # println("p=$p, q=$q")
     # p/q
+    p, q
+end
+
+function cal_3(len::Int64)
+    if len == 1 return 8, 3 end
+    p::UInt64, q::UInt64 = (2len-1)^2, 2
+    i = len - 1
+    while i >= 1
+        # p_1, q_1 = p, q        
+        p, q = (2i-1)^2*q, 2q+p
+        i = i - 1
+    end
+    p, q = 4q, p+q
+    # println("p=$p, q=$q")
     p, q
 end
 
@@ -83,12 +97,13 @@ function minimalDistanceToPi(min::Int64, max::Int64)
     result = 1.0
     for i = 1 : getSize()
         numerator,denominator = cal_2(i)
-        if denominator > min
+        if denominator < min
             continue
         elseif denominator <= max
             # strResult = "$numerator/$denominator"
             if abs(numerator/denominator - pi) <  result
                 result = numerator/denominator
+                println("denominator=$denominator, result=$result")
                 strResult = "$numerator/$denominator"
             end
         else

@@ -21,11 +21,13 @@ function __init__()
     s = readline()
     for i in 1 : parse(Int64, s)
         # p, q = cal_3(i)
-        result = test_minimal_distince_to_pi(i)
-        # println("i=$i, result=($p, $q), p/q = ", p/q)
-        println("i=$i, result=$result")
+        # result = arctan_to_pi(i)
+        p, q = arctan_to_pi(i)
+        println("i=$i, result=($p, $q), p/q = ", p/q)
+        # println("i=$i, result=$result")
     end
     # test_2(parse(Int64, s))
+    # arctan_to_pi(parse(Int64, s))
 end
 
 
@@ -64,6 +66,31 @@ function cal_3(len::Int64)
     end
     p, q = 4q, p+q
     println("p=$p, q=$q")
+    p, q
+end
+
+
+function arcsin_to_pi(n::Int64)
+    sum :: BigFloat = 0.0
+    for i = 0 : n
+        sum += factorial(2i)/((4^i*factorial(i)^2)*(2i+1)*2^(2i+1))
+    end
+    6*sum
+end
+
+function arctan_to_pi(n::Int64)
+    # sum :: BigFloat = 0.0
+    # for i = 0 : n
+    #     sum += (-1)^i/(2i+1)
+    # end
+    # 4*sum
+    p::UInt64, q::UInt64 = 4,1
+    # while i <= n
+    for i = 1 : n
+        # sum += (-1)^i/(2i+1)
+        # p, q = (-1)
+        p, q = p*(2i+1)+(-1)^i*q, q * (2i+1)
+    end
     p, q
 end
 
