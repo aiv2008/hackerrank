@@ -19,15 +19,14 @@ end
 
 function __init__()
     s = readline()
-    for i in 1 : parse(Int64, s)
-        # p, q = cal_3(i)
-        # result = arctan_to_pi(i)
-        p, q = arctan_to_pi(i)
-        println("i=$i, result=($p, $q), p/q = ", p/q)
-        # println("i=$i, result=$result")
-    end
-    # test_2(parse(Int64, s))
-    # arctan_to_pi(parse(Int64, s))
+    # for i in 1 : parse(Int64, s)
+    #     p, q = arctan_to_pi(i)
+    #     println("i=$i, result=($p, $q), p/q = ", p/q)
+    # end
+
+    p,q = cal_4(parse(Int64, s))
+    println("p=$p, q=$q")
+    println("p/q=", p/q)
 end
 
 
@@ -79,18 +78,30 @@ function arcsin_to_pi(n::Int64)
 end
 
 function arctan_to_pi(n::Int64)
-    # sum :: BigFloat = 0.0
-    # for i = 0 : n
-    #     sum += (-1)^i/(2i+1)
-    # end
-    # 4*sum
-    p::UInt64, q::UInt64 = 4,1
+    p::UInt64, q::UInt64 = 1,1
     # while i <= n
     for i = 1 : n
         # sum += (-1)^i/(2i+1)
         # p, q = (-1)
         p, q = p*(2i+1)+(-1)^i*q, q * (2i+1)
+        p, q = p/gcd(p,q), q/gcd(p,q)
     end
+    # 4p/gcd(4p,q), q/gcd(4p,q)
+    4p,q
+end
+
+function cal_4(n::Int64)
+    # sum :: Float64 = 0.0
+    p::UInt64, q::UInt64 = 1, 1
+    for i = 1 : n
+        # sum += 1/((4i+1)*(2i+1)*(i+1))
+        p, q = p*(4i+1)*(2i+1)*(i+1)+q, q*(4i+1)*(2i+1)*(i+1)
+        # println("p=$p, q=$q, gcd(p,q)=", gcd(p,q))
+        p, q = p/gcd(p,q), q/gcd(p,q)
+        # println("p=$p, q=$q")
+    end
+    p, q = 3p/gcd(3p,q),q/gcd(3p,q)
+    println("p=$p, q=$q")
     p, q
 end
 
