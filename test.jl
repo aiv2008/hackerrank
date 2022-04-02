@@ -19,18 +19,22 @@ end
 
 function __init__()
     s = readline()
-    # for i in 1 : parse(Int64, s)
-    #     p, q = arctan_to_pi(i)
-    #     println("i=$i, result=($p, $q), p/q = ", p/q)
-    # end
+    for i = 1 : parse(Int64, s)
+        println("i=$i")
+        p, q = continued_fraction(i)
+        println("i=$i, result=($p, $q), p/q = ", p/q)
+    end
 
-    p,q = cal_4(parse(Int64, s))
-    println("p=$p, q=$q")
-    println("p/q=", p/q)
+    # p,q = arctan_to_pi(parse(Int64, s))
+    # println("p=$p, q=$q")
+    # println("p/q=", p/q)
 end
 
+function continued_fraction(lower::Int64, upper::Int64)
+    
+end
 
-function test_2(len::Int64)
+function continued_fraction(len::Int64)
     # println("len=$len")
     p_0, p_1, q_0, q_1 = 1,interval[1], 0 , 1
     p, q = 0, 0
@@ -49,7 +53,7 @@ function test_2(len::Int64)
         end
     end
     println("p=$p, q=$q")
-    p/q
+    p, q
 end
 
 function cal_3(len::Int64)
@@ -87,7 +91,9 @@ function arctan_to_pi(n::Int64)
         p, q = p/gcd(p,q), q/gcd(p,q)
     end
     # 4p/gcd(4p,q), q/gcd(4p,q)
-    4p,q
+    p, q = 4p/gcd(4,q),q/gcd(4,q)
+    println("p=$p, q=$q")
+    p, q
 end
 
 function cal_4(n::Int64)
